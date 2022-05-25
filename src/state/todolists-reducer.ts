@@ -1,11 +1,12 @@
 import {FilterValuesType, TodolistType} from '../App'
+import {v1} from 'uuid'
 
-export const todolistsReducer = (state: Array<TodolistType>, action: todolistsReducerACType): Array<TodolistType> => {
+export const todolistsReducer = (state: Array<TodolistType>, action: TodolistsReducerACType): Array<TodolistType> => {
   switch (action.type) {
     case 'REMOVE-TODOLIST':
       return state.filter(s => s.id !== action.payload.todolistId)
     case 'ADD-TODOLIST':
-      let newTodolist: TodolistType = {id: action.payload.id, title: action.payload.title, filter: 'all'}
+      let newTodolist: TodolistType = {id: action.payload.todolistId, title: action.payload.title, filter: 'all'}
       return [...state, newTodolist]
     case 'CHANGE-TODOLIST-TITLE':
       return state.map(s => s.id === action.payload.todolistId ? {...s, title: action.payload.title} : s)
@@ -16,9 +17,9 @@ export const todolistsReducer = (state: Array<TodolistType>, action: todolistsRe
   }
 }
 
-type todolistsReducerACType = removeTodolistACType | addtodolistACType | changeTodolistTitleACType | changeFilterType
+type TodolistsReducerACType = RemoveTodolistACType | AddTodolistACType | changeTodolistTitleACType | ChangeFilterType
 
-type removeTodolistACType = ReturnType<typeof removeTodolistAC>
+export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>
 export const removeTodolistAC = (todolistId: string) => {
   return {
     type: 'REMOVE-TODOLIST',
@@ -26,11 +27,11 @@ export const removeTodolistAC = (todolistId: string) => {
   } as const
 }
 
-type addtodolistACType = ReturnType<typeof addTodolistAC>
-export const addTodolistAC = (id: string, title: string) => {
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>
+export const addTodolistAC = (title: string) => {
   return {
     type: 'ADD-TODOLIST',
-    payload: {id, title}
+    payload: {title, todolistId: v1()}
   } as const
 }
 
@@ -42,7 +43,7 @@ export const changeTodolistTitleAC = (todolistId: string, title: string) => {
   } as const
 }
 
-type changeFilterType = ReturnType<typeof changeFilterAC>
+type ChangeFilterType = ReturnType<typeof changeFilterAC>
 export const changeFilterAC = (id: string, filter: FilterValuesType) => {
   return {
     type: 'CHANGE-TODOLIST-FILTER',
