@@ -1,18 +1,17 @@
+import React, {ChangeEvent, useCallback} from 'react'
 import {Checkbox, IconButton} from '@material-ui/core'
 import {EditableSpan} from './EditableSpan'
 import {Delete} from '@material-ui/icons'
-import React, {ChangeEvent, useCallback} from 'react'
 import {TaskType} from './Todolist'
 
 type TaskPropsType = {
   changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
-  changeTaskTitle: (taskId: string, newTitle: string, tidolistId: string) => void
+  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
   removeTask: (taskId: string, todolistId: string) => void
   task: TaskType
   todolistId: string
 }
-
-export const Task: React.FC<TaskPropsType> = React.memo((props) => {
+export const Task = React.memo((props: TaskPropsType) => {
   const onClickHandler = () => props.removeTask(props.task.id, props.todolistId)
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let newIsDoneValue = e.currentTarget.checked
@@ -20,20 +19,19 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
   }
   const onTitleChangeHandler = useCallback((newValue: string) => {
     props.changeTaskTitle(props.task.id, newValue, props.todolistId)
-  }, [props.changeTaskStatus, props.todolistId, props.task.id])
+  }, [props.task.id, props.changeTaskTitle, props.todolistId])
 
-  return (
-    <div key={props.task.id} className={props.task.isDone ? 'is-done' : ''}>
-      <Checkbox
-        checked={props.task.isDone}
-        color="primary"
-        onChange={onChangeHandler}
-      />
 
-      <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
-      <IconButton onClick={onClickHandler}>
-        <Delete/>
-      </IconButton>
-    </div>
-  )
+  return <div key={props.task.id} className={props.task.isDone ? 'is-done' : ''}>
+    <Checkbox
+      checked={props.task.isDone}
+      color="primary"
+      onChange={onChangeHandler}
+    />
+
+    <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
+    <IconButton onClick={onClickHandler}>
+      <Delete/>
+    </IconButton>
+  </div>
 })
