@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
 import { Task } from './Task'
-import { FilterValuesType } from './App';
+import {FilterValuesType} from './state/todolists-reducer'
 
 export type TaskType = {
     id: string
