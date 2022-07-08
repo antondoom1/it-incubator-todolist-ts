@@ -64,7 +64,7 @@ export const Todolist = React.memo(function (props: PropsType) {
   }
 
   return <div>
-    <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
+    <h3><EditableSpan value={props.title} onChange={changeTodolistTitle} entityStatus={props.entityStatus}/>
       <IconButton onClick={removeTodolist} disabled={toCheckStatus}>
         <Delete/>
       </IconButton>
@@ -76,6 +76,7 @@ export const Todolist = React.memo(function (props: PropsType) {
                                         removeTask={props.removeTask}
                                         changeTaskTitle={props.changeTaskTitle}
                                         changeTaskStatus={props.changeTaskStatus}
+                                        entityStatus={t.entityStatus}
         />)
       }
     </div>
